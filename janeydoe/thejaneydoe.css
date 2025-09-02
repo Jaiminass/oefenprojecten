@@ -1,0 +1,247 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #0e0e10;
+    color: #f0f0f5;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+       
+}
+
+header {
+    background-color: #1c1c23;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;   
+    border-bottom: 3px solid #ff69b4;
+    text-align: center;
+}
+
+nav {
+    margin-top: 10px; 
+}
+
+nav a {
+    margin: 0 15px; 
+}
+header h1 {
+    color: #fdafd6;  
+    font-weight: 900;
+    font-size: 2rem;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ffffff;  
+}
+
+
+.hero {
+    background: url('banner.png') no-repeat center center/cover;
+    padding: 100px 0;
+    text-align: center;
+    color: #fcfcfc;
+}
+
+
+.hero h2 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background-color: #0e0e10;
+    color: #f3f0f2;
+    padding: 12px 30px;
+    border: 2px solid #ff69b4;
+    border-radius: 25px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #ff69b4;
+    color: #0e0e10;
+}
+
+
+.streams {
+    padding: 60px 0;
+    background-color: #1c1c23;
+    text-align: center;
+}
+
+.streams h2 {
+    color: #ff69b4;
+    margin-bottom: 40px;
+}
+
+.stream-list {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stream-item {
+    background-color: #2a2a33;
+    border-radius: 12px;
+    width: 320px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.6); 
+    transition: transform 0.3s ease;
+}
+
+.stream-item:hover {
+    transform: scale(1.05);
+}
+
+.stream-item img {
+    width: 100%;
+    height: 300px;     /* toegevoegd */
+    object-fit: cover; /* toegevoegd */
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+
+
+.stream-item h3 {
+    color: #a85353;
+    margin-bottom: 8px;
+}
+
+.stream-item p {
+    color: #ccc;
+}
+
+
+.about {
+    padding: 60px 0;
+    background-color: #121217;
+    text-align: center;
+}
+
+.about h2 {
+    color: #ff69b4;
+    margin-bottom: 20px;
+}
+
+.about p {
+    max-width: 700px;
+    margin: auto;
+    color: #ddd;
+    font-size: 1.1rem;
+}
+
+
+.contact {
+    padding: 60px 0;
+    background-color: #1c1c23;
+    text-align: center;
+}
+
+.contact h2 {
+    color: #ff69b4;
+    margin-bottom: 20px;
+}
+
+.contact p {
+    color: #bbb;
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 0 15px;
+    color: #f0f0f5;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 2px solid #ff69b4;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #ff69b4;
+    color: #0e0e10;
+}
+
+
+footer {
+    background-color: #121217;
+    color: #555;
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid #ff69b4;
+    font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+    nav {
+        flex-basis: 100%;
+        text-align: center;
+        margin-top: 15px;
+    }
+    nav a {
+        margin: 0 15px;
+    }
+    .stream-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    .stream-item {
+        width: 90%;
+    }
+}
+.doneer {
+    position: absolute;
+    top: 20px;      
+    right: 40px;    
+    z-index: 10;    
+    text-align: right;
+}
+.doneer a {
+    display: inline-block;
+    margin: 0 15px;
+    color: #f0f0f5;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 2px solid #ff69b4;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.doneer a:hover {
+    background-color: #ff69b4;
+    color: #0e0e10;
+}
