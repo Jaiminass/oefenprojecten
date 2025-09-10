@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  color: white;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease;
+  min-height: 100vh;
+}
+
+.quiz-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Speciaal voor FMA: zwarte tekst op vraag en antwoorden */
+.fma-theme #question,
+.fma-theme #answer-buttons button {
+  color: black;
+  background-color: rgba(255,255,255,0.8);
+}
+
+/* Knoppen */
+.btn {
+  display: block;
+  margin: 10px auto;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  background: #ffffff20;
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 60%;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #ffffff50;
+}
+
+/* Knoppen bij antwoorden */
+#answer-buttons button {
+  width: 80%;
+  margin-bottom: 12px;
+}
+
+/* Correct & wrong antwoorden */
+.btn.correct {
+  background-color: #2ecc71 !important; /* groen */
+  border-color: #27ae60 !important;
+  color: white !important;
+}
+
+.btn.wrong {
+  background-color: #e74c3c !important; /* rood */
+  border-color: #c0392b !important;
+  color: white !important;
+}
+
+/* Next button styling: afbeelding gecentreerd, geen rand */
+#next-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 0;
+}
+
+#next-btn img {
+  height: 60px;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+#next-btn:hover img {
+  transform: scale(1.1);
+}
+
+/* Verberg elementen met class .hidden */
+.hidden {
+  display: none;
+}
+
+/* Resultaat scherm */
+#result-screen {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 3rem;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.7);
+}
+
+.pass {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.fail {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+/* Restart knop in resultaat scherm */
+#restart-btn {
+  margin-top: 20px;
+  width: 50%;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background: #111;
+  padding: 10px;
+}
+
+.nav-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: darkred;
+}
