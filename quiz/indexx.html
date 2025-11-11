@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anime & Game Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-btn">Quiz</a>
+    <a href="#" id="hint-btn" class="nav-btn">50/50</a>
+    <a href="#" id="over-btn" class="nav-btn">Hint</a>
+  </nav>
+
+  <div class="quiz-container">
+    <h1 id="question">Vraag komt hier</h1>
+    <div id="answer-buttons"></div>
+    <button id="next-btn" class="btn">
+      <img src="pikachu.png" alt="Volgende" id="next-img" />
+    </button>
+  </div>
+
+  <!-- Leeftijdscheck bericht, standaard verborgen -->
+ <div id="leeftijd-message" style="display:none; text-align:center; margin-top: 50px;">
+  <h2></h2>
+  <img src="warning.png" alt="Waarschuwing" style="max-width: 200px; margin-top: 20px;" />
+</div>
+
+  <!-- Hint-sectie -->
+  <div id="over-mij-container" class="hidden" style="max-width: 300px; margin: 30px auto;">
+    <h2>Hint</h2>
+    <button id="toon-foto-btn" class="btn">Sure?</button>
+    <img id="over-mij-foto" src="jouwfoto.jpg" alt="Verrassing!" class="hidden" style="max-width: 100%; margin-top: 20px;" />
+    <p id="foto-tekst" class="hidden" style="margin-top: 15px; font-weight: bold;">
+      You want our help? Too bad, we don't know.
+    </p>
+  </div>
+
+  <div id="result-screen" class="hidden">
+    <h2 id="result-title"></h2>
+    <p id="score-text"></p>
+    <button id="restart-btn" class="btn">Opnieuw starten</button>
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+    // Leeftijdscheck functie
+    function checkLeeftijd() {
+      const leeftijd = prompt("Hoe oud ben je?");
+      const quizContainer = document.querySelector('.quiz-container');
+      const leeftijdMessage = document.getElementById('leeftijd-message');
+
+      if (leeftijd === null) {
+        // Als gebruiker prompt sluit zonder iets in te vullen, verberg quiz
+        quizContainer.style.display = 'none';
+        leeftijdMessage.style.display = 'block';
+        leeftijdMessage.querySelector('h2').textContent = "Je moet je leeftijd invullen om door te gaan.";
+        return;
+      }
+
+      if (Number(leeftijd) >= 18) {
+        // Leeftijd oké, quiz tonen
+        quizContainer.style.display = 'block';
+        leeftijdMessage.style.display = 'none';
+      } else {
+        // Te jong, quiz verbergen en bericht tonen
+        quizContainer.style.display = 'none';
+        leeftijdMessage.style.display = 'block';
+      }
+    }
+
+    // Voer leeftijdscheck uit zodra de pagina geladen is
+    window.onload = () => {
+      checkLeeftijd();
+    };
+
+    // Toon/verberg hint-foto en tekst
+    document.getElementById('toon-foto-btn').addEventListener('click', () => {
+      const foto = document.getElementById('over-mij-foto');
+      const tekst = document.getElementById('foto-tekst');
+      foto.classList.remove('hidden');
+      tekst.classList.remove('hidden');
+    });
+
+    // Toon/verberg hint-tab
+    document.getElementById('over-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const overMij = document.getElementById('over-mij-container');
+      const quiz = document.querySelector('.quiz-container');
+      const resultScreen = document.getElementById('result-screen');
+
+      if (overMij.classList.contains('hidden')) {
+        overMij.classList.remove('hidden');
+        quiz.style.display = 'none';
+        resultScreen.classList.add('hidden');
+      } else {
+        overMij.classList.add('hidden');
+        quiz.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

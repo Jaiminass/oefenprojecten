@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokémon Quiz - Level 2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="level2">
+
+  <!-- 🎶 Pokémon muziek -->
+  <audio id="bg-music" src="pokemon-theme.mp3" loop></audio>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-btn">Level 1</a>
+    <button id="hint-btn" class="nav-btn">50/50</button>
+    <button id="over-btn" class="nav-btn">Hint</button>
+  </nav>
+
+  <!-- Quiz -->
+  <div class="quiz-container">
+    <h1 id="question">Vraag komt hier</h1>
+    <div id="answer-buttons"></div>
+<button id="next-btn" class="btn">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" alt="Volgende">
+  
+</button>
+  </div>
+
+  <!-- Hint -->
+  <div id="over-mij-container" class="hidden" style="max-width: 300px; margin: 30px auto;">
+    <h2>Hint</h2>
+    <button id="toon-foto-btn" class="btn">Sure?</button>
+    <img id="over-mij-foto" src="jouwfoto.jpg" alt="Verrassing!" class="hidden" style="max-width: 100%; margin-top: 20px;" />
+    <p id="foto-tekst" class="hidden" style="margin-top: 15px; font-weight: bold;">
+      You want our help? Too bad, we don't know.
+    </p>
+  </div>
+
+  <!-- Resultaat scherm -->
+  <div id="result-screen" class="hidden">
+    <h2 id="result-title"></h2>
+    <p id="score-text"></p>
+    <button id="restart-btn" class="btn">Opnieuw starten</button>
+    <a href="games.html" class="btn">Terug naar Level 1</a>
+  </div>
+
+  <script src="script-level2.js"></script>
+</body>
+</html>
