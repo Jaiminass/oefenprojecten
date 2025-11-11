@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Dojawerk</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <button onclick="showSection('register')">Registreren</button>
+    <button onclick="showSection('login')">Login</button>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('profiles')">Ondernemers</button>
+    <button onclick="showSection('projects')">Projecten</button>
+    <button onclick="showSection('chat')">Chat</button>
+  </nav>
+</header>
+
+<main>
+  <!-- Registratie -->
+  <section id="register">
+    <h2>Registratie</h2>
+    <form id="registerForm">
+      <input type="text" name="name" placeholder="Naam" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Wachtwoord" required>
+      <select name="role" required>
+        <option value="">Kies rol</option>
+        <option value="klant">Klant</option>
+        <option value="ondernemer">Ondernemer</option>
+      </select>
+      <button type="submit">Registreer</button>
+    </form>
+  </section>
+
+  <!-- Login -->
+  <section id="login">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Wachtwoord" required>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <h2>Dashboard</h2>
+    <h3>Upload Profielfoto</h3>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="photo" required>
+      <button type="submit">Upload</button>
+    </form>
+
+    <h3>Profiel bewerken</h3>
+    <form id="updateProfileForm">
+      <textarea name="bio" placeholder="Bio"></textarea>
+      <input type="text" name="service" placeholder="Dienst">
+      <button type="submit">Update profiel</button>
+    </form>
+
+    <h3>Project plaatsen</h3>
+    <form id="projectForm">
+      <input type="text" name="title" placeholder="Projecttitel" required>
+      <textarea name="description" placeholder="Beschrijving" required></textarea>
+      <input type="text" name="category" placeholder="Categorie">
+      <input type="number" name="budget" placeholder="Budget">
+      <input type="date" name="deadline" placeholder="Deadline">
+      <button type="submit">Plaats project</button>
+    </form>
+  </section>
+
+  <!-- Ondernemerslijst -->
+  <section id="profiles">
+    <h2>Ondernemers</h2>
+    <input type="text" id="filterInput" placeholder="Zoek op dienst...">
+    <div id="profilesContainer"></div>
+  </section>
+
+  <!-- Projecten -->
+  <section id="projects">
+    <h2>Projecten</h2>
+    <div id="projectsContainer"></div>
+  </section>
+
+  <!-- Chat -->
+  <section id="chat">
+    <h2>Chat</h2>
+    <label>Kies gesprekspartner:</label>
+    <select id="chatUserSelect"></select>
+    <div id="chatBox"></div>
+    <form id="chatForm">
+      <input type="text" id="chatMessage" placeholder="Typ je bericht...">
+      <button type="submit">Verstuur</button>
+    </form>
+  </section>
+</main>
+
+<script>
+let token = localStorage.getItem("token");
+let userId = localStorage.getItem("userId");
+let userRole = localStorage.getItem("role");
+
+const socket = io("http://localhost:3000");
+if(userId) socket.emit("joinRoom", userId);
+
+function showSection(id){
+  document.querySelectorAll("main section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+// Registratie
+document.getElementById("registerForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const f=e.target;
+  fetch("http://localhost:3000/register",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      name:f.name.value,
+      email:f.email.value,
+      password:f.password.value,
+      role:f.role.value
+    })
+  }).then(r=>r.json()).then(d=>{
+    alert(d.message);
+    if(d.message==="Registratie succesvol") showSection("login");
+  });
+});
+
+// Login
+document.getElementById("loginForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const f=e.target;
+  fetch("http://localhost:3000/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({email:f.email.value,password:f.password.value})
+  }).then(r=>r.json()).then(d=>{
+    alert(d.message);
+    if(d.token){
+      token=d.token;
+      userId=d.userId;
+      userRole=d.role;
+      localStorage.setItem("token",token);
+      localStorage.setItem("userId",userId);
+      localStorage.setItem("role",userRole);
+      socket.emit("joinRoom",userId);
+      showSection("dashboard");
+    }
+  });
+});
+
+// Upload foto
+document.getElementById("uploadForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  fetch("http://localhost:3000/upload",{method:"POST",headers:{"Authorization":token},body:fd})
+  .then(r=>r.json()).then(d=>alert(d.message));
+});
+
+// Profiel update
+document.getElementById("updateProfileForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  fetch("http://localhost:3000/profile/update",{
+    method:"PUT",
+    headers:{"Authorization":token,"Content-Type":"application/json"},
+    body:JSON.stringify({bio:e.target.bio.value,service:e.target.service.value})
+  }).then(r=>r.json()).then(d=>alert(d.message));
+});
+
+// Project plaatsen
+document.getElementById("projectForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  fetch("http://localhost:3000/projects",{
+    method:"POST",
+    headers:{"Authorization":token,"Content-Type":"application/json"},
+    body:JSON.stringify({
+      title:e.target.title.value,
+      description:e.target.description.value,
+      category:e.target.category.value,
+      budget:e.target.budget.value,
+      deadline:e.target.deadline.value
+    })
+  }).then(r=>r.json()).then(d=>{ alert(d.message); loadProjects(); });
+});
+
+// Profielen laden
+function loadProfiles(){
+  fetch("http://localhost:3000/profiles").then(r=>r.json()).then(users=>{
+    const container=document.getElementById("profilesContainer");
+    container.innerHTML="";
+    users.filter(u=>u.role==="ondernemer").forEach(u=>{
+      const div=document.createElement("div");
+      div.innerHTML=`<h3>${u.name}</h3>
+                     ${u.photoUrl?`<img src="${u.photoUrl}" class="profile-img">`:``}
+                     <p>${u.service||""}</p>`;
+      container.appendChild(div);
+    });
+  });
+}
+
+// Filter functie
+document.getElementById("filterInput").addEventListener("input", e=>{
+  const filter=e.target.value.toLowerCase();
+  document.querySelectorAll("#profilesContainer div").forEach(div=>{
+    const txt=div.querySelector("p")?.innerText.toLowerCase()||"";
+    div.style.display = txt.includes(filter)?"block":"none";
+  });
+});
+
+// Projecten laden
+function loadProjects(){
+  fetch("http://localhost:3000/projects").then(r=>r.json()).then(projs=>{
+    const container=document.getElementById("projectsContainer");
+    container.innerHTML="";
+    projs.forEach(p=>{
+      const div=document.createElement("div");
+      div.innerHTML=`<h3>${p.title}</h3><p>${p.description}</p>
+                     <p>Budget: ${p.budget} | Deadline: ${p.deadline}</p>`;
+      container.appendChild(div);
+    });
+  });
+}
+
+// Chat
+function loadChatUsers(){
+  fetch("http://localhost:3000/profiles").then(r=>r.json()).then(users=>{
+    const sel=document.getElementById("chatUserSelect");
+    sel.innerHTML="";
+    users.filter(u=>(userRole==="klant"? u.role==="ondernemer": u.role==="klant")).forEach(u=>{
+      const opt=document.createElement("option");
+      opt.value=u.id;
+      opt.innerText=u.name;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+const chatBox=document.getElementById("chatBox");
+const chatForm=document.getElementById("chatForm");
+chatForm.addEventListener("submit", e=>{
+  e.preventDefault();
+  const msg=document.getElementById("chatMessage").value;
+  const toId=document.getElementById("chatUserSelect").value;
+  if(!msg||!toId) return;
+  socket.emit("sendMessage",{fromId:userId,toId,message:msg,role:userRole});
+  document.getElementById("chatMessage").value="";
+});
+
+socket.on("receiveMessage", data=>{
+  const selectedId=document.getElementById("chatUserSelect").value;
+  if(data.fromId===selectedId||data.toId===selectedId){
+    const div=document.createElement("div");
+    div.innerHTML=`<b>${data.role==="ondernemer"? "Ond":"Klant"}:</b> ${data.message}`;
+    chatBox.appendChild(div);
+  }
+});
+
+// Initial load
+document.querySelector("button[onclick*='profiles']").addEventListener("click", loadProfiles);
+document.querySelector("button[onclick*='projects']").addEventListener("click", loadProjects);
+document.querySelector("button[onclick*='chat']").addEventListener("click", loadChatUsers);
+
+</script>
+</body>
+</html>
