@@ -20,8 +20,8 @@ app.use(express.static("public"));
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "Fam1lyguy!", // jouw wachtwoord
+  user: "xxxxx",
+  password: "xxxxxx!", // jouw wachtwoord
   database: "dojawerk"
 });
 
@@ -158,3 +158,4 @@ io.on("connection", socket=>{
 
 // Start server
 server.listen(3000,()=>console.log("Server gestart op http://localhost:3000"));
+
